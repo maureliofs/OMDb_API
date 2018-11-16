@@ -2,6 +2,7 @@ import requests
 import json
 from operator import itemgetter
 from collections import OrderedDict
+import operator
 
 def requisicao(nome):
     try:
@@ -11,7 +12,6 @@ def requisicao(nome):
         print('Erro de conexão')
         return None
 
-
 while True:
     nome = input('Digite o nome do filme ou EXIT para sair: ')
     if nome == 'EXIT':
@@ -19,7 +19,8 @@ while True:
     else:
         result = requisicao(nome)
         dic = json.loads(result.text)
-        #OrderedDict(sorted(dic.items(), key=lambda t: t[1]))
-        for i in dic['Search']:
-            print("Titulo: " + i['Title'] + "\n" "Ano: " + i['Year'])
-            # return print('{' + '"Title"' + ':"' + dic['Title'] + '",'+'"Year"'+':"' + dic['Year'] + '"}')
+        print('----------------------------------------------')
+        for i in sorted(dic['Search'], key=operator.itemgetter('Year')):
+            print("Titulo:", i['Title'])
+            print("Ano:", i['Year'])
+            print('----------------------------------------------')
